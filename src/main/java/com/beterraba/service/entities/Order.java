@@ -1,5 +1,6 @@
 package com.beterraba.service.entities;
 
+import com.beterraba.service.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
@@ -22,6 +23,7 @@ public class Order implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",timezone = "GMT")
     private Instant moment;
+    private int status;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
@@ -29,9 +31,10 @@ public class Order implements Serializable {
 
     public Order() {};
 
-    public Order(long id, Instant moment, User client) {
+    public Order(long id, Instant moment,OrderStatus status, User client) {
         this.id = id;
         this.moment = moment;
+        setStatus(status);
         this.client = client;
     }
 
@@ -49,6 +52,14 @@ public class Order implements Serializable {
 
     public void setMoment(Instant moment) {
         this.moment = moment;
+    }
+
+    public OrderStatus getStatus() {
+        return OrderStatus.valueOf(status);
+    }
+
+    public void setStatus(OrderStatus status) {
+        if(status != null) this.status = status.getCode();
     }
 
     public User getClient() {
