@@ -1,7 +1,7 @@
 package com.beterraba.service.resource;
 
-import com.beterraba.service.entities.Category;
-import com.beterraba.service.services.CategoryService;
+import com.beterraba.service.entities.Product;
+import com.beterraba.service.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,21 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/categories")
-public class CategoryResource {
+@RequestMapping(value = "/products")
+public class ProductResource {
 
 	@Autowired
-	private CategoryService service;
+	private ProductService service;
 
 	@GetMapping
-	public ResponseEntity<List<Category>> findAll() {
-		List<Category> userList = service.findAll();
+	public ResponseEntity<List<Product>> findAll() {
+		List<Product> userList = service.findAll();
 		return ResponseEntity.ok().body(userList);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Category> findById(@PathVariable Long id) {
-		Category category = service.findById(id);
-		return ResponseEntity.ok().body(category);
+	public ResponseEntity<Product> findById(@PathVariable Long id) {
+		Product product = service.findById(id);
+		return ResponseEntity.ok().body(product);
 	}
 }
