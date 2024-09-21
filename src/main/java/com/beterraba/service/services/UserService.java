@@ -4,6 +4,7 @@ import com.beterraba.service.entities.User;
 import com.beterraba.service.exceptions.DatabaseException;
 import com.beterraba.service.exceptions.ResourceNotFoundException;
 import com.beterraba.service.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -42,10 +43,14 @@ public class UserService {
     }
 
     public User update(Long id,User data) {
-        User entity = repository.getReferenceById(id);
-        updateData(entity,data);
-        return  repository.save(entity);
-    }
+        try {
+            User entity = repository.getReferenceById(id);
+            updateData(entity,data);
+            return  repository.save(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
+}
 
     private void updateData(User entity, User data) {
         entity.setName(data.getName());
