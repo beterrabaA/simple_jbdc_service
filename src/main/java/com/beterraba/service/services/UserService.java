@@ -1,6 +1,7 @@
 package com.beterraba.service.services;
 
 import com.beterraba.service.entities.User;
+import com.beterraba.service.exceptions.ResourceNotFoundException;
 import com.beterraba.service.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> optionalUser = repository.findById(id);
-        return optionalUser.get();
+        return optionalUser.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public User insert(User user) {
